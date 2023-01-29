@@ -1,0 +1,158 @@
+<div class="page-view-container" fxFlex="100" fxLayout="column" fxLayoutGap="10px">
+    <mat-card class="mat-elevation-z4">
+      <mat-card-header>
+        <mat-card-subtitle>Edit Profile</mat-card-subtitle>
+      </mat-card-header>
+  
+      <mat-card-content fxLayout="column">
+        <div fxFlex="100" class="content-inner">
+          <!-- <mat-short-vertical-login></mat-short-vertical-login> -->
+          <form [formGroup]="userForm" fxLayout="row wrap" id="userForm" (ngSubmit)="onSubmit()">
+              <fieldset fxFlex="100" fxLayout="row wrap" [disabled]="isProcessing">
+                <div class="profile-pic"style="width: 100%">
+                  <label class="-label" [matMenuTriggerFor]="menu" >
+                    <span class="glyphicon glyphicon-camera"></span>
+                    <span>Change picture</span>
+                  </label>
+                  <input #uploadAttachmentFile id="profilePictureInput" type="file" (change)="loadProfilePicture($event)" accept="image/bmp, image/jpeg, image/x-png, image/png"/>
+                  <img [src]="currentUser.profilePictureFile" (error)="profilePicErrorHandler($event)" id="profilePicture" width="200" />
+                </div>
+                <mat-menu #menu="matMenu" xPosition="before">
+                  <button mat-menu-item (click)="openWebCamAttachment()">
+                    <mat-icon>camera_alt</mat-icon>
+                    <span>Open web cam</span>
+                  </button>
+                  <button mat-menu-item (click)="uploadAttachmentFile.click()">
+                    <mat-icon>collections</mat-icon>
+                    <span>Select image</span>
+                  </button>
+                </mat-menu>
+                <div fxFlex="100" fxLayout="column">
+                  <h3>Account details</h3>
+                </div>
+                <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row" >
+                  <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}" *ngIf="!isLoading; else elseLoadingGridCol3">
+                    <mat-label>First name</mat-label>
+                    <input
+                      matInput
+                      placeholder="First name"
+                      formControlName="firstName"
+                      [(ngModel)]="userData.firstName">
+                      <mat-error *ngIf="getError('firstName') !== (null || undefined)">{{
+                        (getError('firstName') && getError('firstName').required ? 'Please enter your first name' : '')||
+                        (getError('firstName') && getError('firstName').pattern ? 'Invalid input' : '')
+  
+                      }}</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}" *ngIf="!isLoading; else elseLoadingGridCol3">
+                    <mat-label>Middle name</mat-label>
+                    <input
+                      matInput
+                      placeholder="Middle name"
+                      formControlName="middleName"
+                      [(ngModel)]="userData.middleName">
+                      <mat-error *ngIf="getError('middleName') !== (null || undefined)">{{
+                        (getError('middleName') && getError('middleName').pattern ? 'Invalid input' : '')
+                      }}</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}" *ngIf="!isLoading; else elseLoadingGridCol3">
+                    <mat-label>Last name</mat-label>
+                    <input
+                      matInput
+                      placeholder="Last name"
+                      formControlName="lastName"
+                      [(ngModel)]="userData.lastName">
+                      <mat-error *ngIf="getError('lastName') !== (null || undefined)">{{
+                        (getError('lastName') && getError('lastName').required ? 'Please enter your last name' : '')||
+                        (getError('firstName') && getError('firstName').pattern ? 'Invalid input' : '')
+                      }}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row" style="gap: 15px">
+                  <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}" (click)="picker.open()">
+                    <mat-label>Birthdate</mat-label>
+                    <input
+                      matInput
+                      placeholder="Birthdate"
+                      formControlName="birthDate"
+                      [matDatepicker]="picker">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                      <mat-error *ngIf="getError('birthDate') !== (null || undefined)">{{
+                        (getError('birthDate') && getError('birthDate').required ? 'Please enter your birthdate' : '')
+                      }}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row">
+                  <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}" *ngIf="!isLoading; else elseLoadingGridCol3">
+                    <mat-label>Select Gender</mat-label>
+                    <mat-select [disabled]="isProcessing"
+                      formControlName="genderId"
+                      [(ngModel)]="userData.gender.genderId">
+                      <mat-option value="1">Male</mat-option>
+                      <mat-option value="2">Female</mat-option>
+                      <mat-option value="3">Rather not say</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxLayout="column">
+                  <h3>Contact</h3>
+                </div>
+                <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row">
+                  <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}"  *ngIf="!isLoading; else elseLoadingGridCol3">
+                    <mat-label>Mobile number</mat-label>
+                    <input
+                      matInput
+                      placeholder="Mobile number"
+                      formControlName="mobileNumber"
+                      [(ngModel)]="userData.mobileNumber">
+                      <mat-error *ngIf="getError('mobileNumber') !== (null || undefined)">{{
+                        (getError('mobileNumber') && getError('mobileNumber').required ? 'Please enter your mobile number' : '') ||
+                        (getError('mobileNumber') && getError('mobileNumber').minlength ? 'Please enter a valid mobile number' : '') ||
+                        (getError('mobileNumber') && getError('mobileNumber').maxlength ? 'Please enter a valid 11 digit mobile number' : '')
+                      }}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxLayout="column">
+                  <h3>Address</h3>
+                </div>
+                <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row">
+                  <mat-form-field appearance="outline" fxFlex="100" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}" *ngIf="!isLoading; else elseLoadingGridCol1">
+                    <mat-label>Address</mat-label>
+                    <textarea
+                      matInput
+                      placeholder="Address"
+                      formControlName="address"
+                      [(ngModel)]="userData.address">
+                    </textarea>
+                    <mat-error *ngIf="getError('address') !== (null || undefined)">{{
+                      (getError('address') && getError('address').required ? 'Please enter your address' : '')
+                    }}</mat-error>
+                  </mat-form-field>
+                </div>
+              </fieldset>
+            </form>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button matTooltip="Save" mat-raised-button color="primary" form="userForm" type="submit" [disabled]="isProcessing || !formIsValid ">Save</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  
+  <ng-template #elseLoadingGridCol1>
+    <div fxFlex="100%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}">
+      <ngx-skeleton-loader fxFlex [theme]="{ height: '50px', width: '97%'}"></ngx-skeleton-loader>
+    </div>
+  </ng-template>
+  <ng-template #elseLoadingGridCol2>
+    <div fxFlex="50%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}">
+      <ngx-skeleton-loader fxFlex [theme]="{ height: '50px', width: '97%'}"></ngx-skeleton-loader>
+    </div>
+  </ng-template>
+  <ng-template #elseLoadingGridCol3>
+    <div fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}">
+      <ngx-skeleton-loader fxFlex [theme]="{ height: '50px', width: '97%'}"></ngx-skeleton-loader>
+    </div>
+  </ng-template>
+  

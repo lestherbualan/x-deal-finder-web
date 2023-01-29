@@ -1,0 +1,59 @@
+{
+  "appTitle": "X-Deal Finder",
+  "tableColumns": {
+    "appointment": {
+      "admin": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "vet", "amountToPay", "appointmentStatus", "controls"],
+      "manager": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "vet", "amountToPay", "appointmentStatus", "controls"],
+      "vet": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "appointmentStatus", "controls"],
+      "frontDesk": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "vet", "amountToPay", "appointmentStatus", "controls"]
+    }
+  },
+  "lookup": {},
+  "apiEndPoints": {
+    "auth": {
+      "login": {
+        "admin": "auth/login/admin/",
+        "client": "auth/login/client"
+      },
+      "register": {
+        "admin": "auth/register/admin/",
+        "client": "auth/register/client"
+      },
+      "findByUsername": "auth/findByUsername/"
+    },
+    "user": {
+      "getById": "users/",
+      "getAllAdminUserType": "users/getAllAdminUserType",
+      "getAllClientUserType": "users/getAllClientUserType",
+      "createStaff": "users/admin",
+      "update": "users/",
+      "toggleLock": "users/toggleLock",
+      "approveAdminUser": "users/approveAdminUser/"
+    },
+    "role": "roles/",
+    "store": {
+      "getByAdminAdvanceSearch": "store/getByAdminAdvanceSearch",
+      "getByClientAdvanceSearch": "store/getByClientAdvanceSearch",
+      "getStoreAdvanceSearch": "store/getStoreAdvanceSearch",
+      "getTopStore": "store/getTopStore",
+      "getById": "store/",
+      "create": "store/",
+      "update": "store/",
+      "delete": "store/",
+      "approve": "store/approve/",
+      "addAttachmentFile": "store/addAttachmentFile",
+      "removeAttachmentFile": "store/removeAttachmentFile/",
+      "updateStoreThumbnail": "store/updateStoreThumbnail"
+    },
+    "offerTypes": "offer-types",
+    "offers": {
+      "getByAdvanceSearchByStore": "offers/getByAdvanceSearchByStore",
+      "getByClientAdvanceSearch": "offers/getByClientAdvanceSearch",
+      "getById": "offers/",
+      "create": "offers/",
+      "update": "offers/",
+      "delete": "offers/"
+    },
+    "storeReviews": "store-reviews/"
+  }
+}

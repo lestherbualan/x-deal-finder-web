@@ -1,0 +1,84 @@
+::ng-deep .webcam-capture-dialog .mat-dialog-container {
+    padding: 0!important;
+    display: flex!important;
+    background-color: transparent;
+    margin: 0!important;
+    position: relative;
+    overflow: visible;
+    box-shadow: none!important;
+}
+.webcam-container {
+    display: flex;
+    width: 100%;
+    position: relative;
+    flex-direction: column;
+}
+
+.close {
+    position: absolute;
+    z-index: 1000;
+    right: -20px;
+    top: -20px;
+}
+
+.preview {
+    display: flex;
+    position:absolute;
+    width: inherit;
+    height: inherit;
+    img {
+        width: inherit;
+        height: inherit;
+        object-position: center;
+        object-fit: contain;
+    }
+}
+
+.controls {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: absolute;
+    gap: 20px;
+    button {
+        margin-bottom: 20px;
+    }
+}
+
+::ng-deep .webcam-capture-dialog {
+    max-width: 700px!important;
+    width: 700px!important;
+    padding: 20px;
+    .webcam-container {
+        z-index: 100!important;
+    }
+    @media only screen and (max-width: 414px) {
+        height: 100%!important;
+        app-webcam-capture {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+  
+::ng-deep app-webcam-capture {
+    width: inherit;
+    height: inherit;
+    webcam {
+        width: inherit;
+        height: inherit;
+        display: flex;
+        .webcam-wrapper {
+            width: inherit;
+            height: inherit;
+            video {
+                width: inherit;
+                height: inherit;
+                border-radius: 10px!important;
+            }
+        }
+    }
+}

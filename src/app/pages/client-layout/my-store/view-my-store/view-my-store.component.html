@@ -1,0 +1,245 @@
+<div class="page-view-container">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="20">
+        <div fxLayout="column" fxFlex.gt-xs="33.33%" fxFlex="100" class="store-info">
+            <mat-card class="mat-elevation-z4">
+              <mat-card-content fxLayout="column" >
+                <div class="store-controls">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="onEditStore()">
+                      <span>Edit</span>
+                    </button>
+                    <button mat-menu-item (click)="profilePictureInput.click()">
+                      <span>Change profile</span>
+                    </button>
+                  </mat-menu>
+                </div>
+                <div class="thumb" >
+                  <div class="thumb-cover"></div>
+                  <input #profilePictureInput id="profilePictureInput" type="file" (change)="loadProfilePicture($event)" accept="image/bmp, image/jpeg, image/x-png, image/png"/>
+                  <img [src]="getThumbnail" id="profilePicture" (error)="profilePicErrorHandler($event)" [style]="isUploading ? 'opacity: 0.2' : 'opacity: 1'">
+                </div>
+                <div fxFlex="100" fxLayout="column" fxLayoutAlign="start" class="info">
+                  <div fxFlex="100" fxLayout="row" class="group-info">
+                    <h2 class="group-info-text"*ngIf="!isLoading; else elseLoadinguFullName">
+                      <strong>{{storeData.name}}</strong>
+                    </h2>
+                    <ng-template #elseLoadinguFullName>
+                      <ngx-skeleton-loader fxFlex [theme]="{ height: '20px', width: '20%'}"></ngx-skeleton-loader>
+                    </ng-template>
+                  </div>
+                  <div fxFlex="100" fxLayout="row" class="group-info">
+                    <h4 style="font-weight: 100;" class="group-info-text"*ngIf="!isLoading; else elseLoadingOfferTypes">
+                      {{storeData.storeOfferTypes}}
+                    </h4>
+                    <ng-template #elseLoadingOfferTypes>
+                      <ngx-skeleton-loader fxFlex [theme]="{ height: '20px', width: '20%'}"></ngx-skeleton-loader>
+                    </ng-template>
+                  </div>
+                  <div fxFlex="100" fxLayout="row" class="group-info">
+                    <h3 style="font-weight: 400;" class="group-info-text" *ngIf="!isLoading; else elseLoadinguUsername">{{storeData.description}}</h3>
+                    <ng-template #elseLoadinguUsername>
+                      <ngx-skeleton-loader fxFlex [theme]="{ height: '20px', width: '20%'}"></ngx-skeleton-loader>
+                    </ng-template>
+                  </div>
+                  <div fxFlex="100" fxLayout="row" class="group-info">
+                    <mat-icon *ngIf="storeData.isApproved">check_circle</mat-icon>
+                    <mat-icon *ngIf="!storeData.isApproved">access_time</mat-icon>
+                    <h3 class="group-info-text"*ngIf="!isLoading; else elseLoadinguFullName">&nbsp;{{!storeData.isApproved ? 'Waiting for approval' : 'Approved'}}</h3>
+                    <ng-template #elseLoadinguFullName>
+                      <ngx-skeleton-loader fxFlex [theme]="{ height: '20px', width: '20%'}"></ngx-skeleton-loader>
+                    </ng-template>
+                  </div>
+                </div>
+              </mat-card-content>
+              <mat-card-actions style="padding: 16px;">
+                <button mat-stroked-button matTooltip="Back" routerLink="/my-store" [disabled]="isProcessing || isUploading">
+                  <span>Back</span>
+                </button>
+              </mat-card-actions>
+            </mat-card>
+        </div>
+        <div fxFlex>
+          <mat-tab-group>
+            <mat-tab [label]="'Offers(' + offersCount +')'">
+              <div fxLayout="column">
+                <div class="search-control" fxFlex="100" fxLayoutGap.gt-sm="10" fxLayoutGap="0" fxLayout.gt-sm="row" fxLayout="column">
+                  <div fxFlex="100" fxFlex.gt-sm="50%" >
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                      <mat-label>Search</mat-label>
+                      <input
+                        #searchKeywordInput
+                        matInput
+                        [formControl]="searchKeywordCtrl"
+                        type="search"
+                        placeholder="Search"
+                        [disabled]="isLoadingLookup"
+                        (keydown)="$event.key === 'Enter' ? getOffers(storeId) : true">
+                        <button mat-icon-button matSuffix matTooltip="Search" #searchButton [disabled]="isProcessing" (click)="getOffers(storeId)">
+                          <mat-icon>search</mat-icon>
+                        </button>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="100" fxFlex.gt-sm="50%" >
+                    <mat-form-field style="width: 100%;" appearance="outline" >
+                      <mat-label>Type</mat-label>
+                      <mat-chip-list #offerTypeList [disabled]="isLoadingLookup">
+                        <mat-chip
+                          *ngFor="let offerType of selectedOfferType"
+                          (removed)="remove(offerType)">
+                          {{offerType}}
+                          <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </mat-chip>
+                        <input
+                          placeholder="Search type..."
+                          #offerTypeInput
+                          [formControl]="offerTypeCtrl"
+                          [matAutocomplete]="offerTypeAutocomplete"
+                          [matChipInputFor]="offerTypeList"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+                      </mat-chip-list>
+                      <mat-autocomplete #offerTypeAutocomplete="matAutocomplete" (optionSelected)="selected($event)">
+                        <ng-container *ngFor="let offerType of filteredOfferType | async">
+                          <mat-option *ngIf="!selectedOfferType.includes(offerType)" [value]="offerType">
+                            {{offerType}}
+                          </mat-option>
+                        </ng-container>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxFlex="100">
+                  <mat-form-field appearance="outline" appearance="outline" fxFlex="40">
+                    <mat-label>Offer Status</mat-label>
+                    <mat-select [formControl]="offerStatusCtrl" value="1">
+                      <mat-option value="1">Active</mat-option>
+                      <mat-option value="2">Overdue</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxLayout="column" *ngIf="!isLoading; else elseLoadingOffers">
+                  <div fxLayout.gt-sm="row wrap" *ngIf="storeData.offers.length > 0; else elseNoOfferToShow" >
+                    <div class="offers" fxFlex.gt-sm="33.3%" *ngFor="let offer of currentItemsToShow, let i=index;">
+                      <mat-card fxLayout="row" fxLayout.gt-sm="column">
+                        <mat-card-content>
+                          <div class="controls">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                              <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                              <button mat-menu-item (click)="onEditOffer(offer)">
+                                <span>Edit</span>
+                              </button>
+                              <button mat-menu-item (click)="onDeleteOffer(offer.offerId)">
+                                <span>Remove</span>
+                              </button>
+                            </mat-menu>
+                          </div>
+                          <div fxLayout="row" fxLayout.gt-sm="column" class="card-details">
+                            <div class="thumb">
+                              <div class="thumb-cover"></div>
+                              <img [src]="offer.thumbnailFile ? offer.thumbnailFile.url : ''" (error)="offerThumbErrorHandler($event)">
+                            </div>
+                            <div class="content" fxLayout="column" fxFlex="100">
+                              <span class="type">{{offer.offerType.name}}</span>
+                              <span class="due" [style]="{ 'color': isOverdue(offer.due) ? '#D50000' : isDueToday(offer.due) ? '#EF6C00' : ''  }">{{offer.due| date: 'MMM dd, yyyy'}}{{isOverdue(offer.due) ? '(Overdue)' : isDueToday(offer.due) ? '(Due today)' : ''}}</span>
+                              <span class="desc">{{offer.name}}</span>
+                            </div>
+                          </div>
+                        </mat-card-content>
+                      </mat-card>
+                    </div>
+                    <mat-paginator style="display: flex; width: 100%;" (page)="onPageChange($event)" [length]="storeData.offers.length" [pageSize]="15" [pageSizeOptions]="[15, 30, 60, 150]"></mat-paginator>
+                  </div>
+                  <ng-template #elseNoOfferToShow>
+                    <div fxLayout="column" fxFlex>
+                      <div style="display: flex;height: 100px;">
+                        <div style="display: flex;width: 100%;height: 100%;justify-content: center;align-items: center;flex-direction: column;">
+                          <mat-icon>search</mat-icon>
+                          <span>No offers to show</span>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+              <ng-template #elseLoadingOffers>
+                <span>
+                  Loading offers...
+                </span>
+              </ng-template>
+            </mat-tab>
+            <mat-tab label="Documents">
+              <mat-card style="margin: 10px;">
+                <mat-card-header>
+                  <button mat-stroked-button matTooltip="PDF/PNG/JPEG/JPG/BPM" (click)="uploadAttachmentFile.click()" [disabled]="isProcessing || isUploading">
+                    <mat-icon>attach_file</mat-icon>
+                  </button>
+                </mat-card-header>
+                <mat-card-content fxLayout="column" >
+                  <div>
+                    <input #uploadAttachmentFile style="display: none;" type="file" (change)="loadAttachment($event)" 
+                    accept="image/bmp, 
+                    image/jpeg, 
+                    image/x-png, 
+                    image/png, 
+                    application/pdf
+                    "/>
+                    <i style="
+                    -webkit-line-clamp: 1;
+                    margin: 0 !important;
+                    display: -webkit-box;
+                    max-width: 100%;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    ">
+                    PDF/PNG/JPEG/JPG/BPM
+                    </i>
+                  </div>
+                  <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+                    <br>
+                    <mat-selection-list #documents [multiple]="false" *ngIf="storeData.storeDocuments && storeData.storeDocuments.length > 0; else elseNoDocuments">
+                      <mat-list-option *ngFor="let docs of storeData.storeDocuments" [disableRipple]="true">
+                        <div style="display:flex; justify-content:space-between;align-items:center" *ngIf="!docs.isUploading; else elseIsUploading">
+                          <h3> {{docs.file.originalFileName}}</h3>
+                          <div>
+                            <button mat-icon-button [disabled]="isProcessing || isUploading" (click)="openFile(docs.file.url)">
+                              <mat-icon>open_in_new</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="removeAttachmentFile(docs.storeDocumentId)" [disabled]="isProcessing || isUploading">
+                              <mat-icon>cancel</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                        <ng-template #elseIsUploading>
+                          <div style="display:flex; justify-content:space-between;align-items:center">
+                            <span>Uploading...</span>
+                          </div>
+                        </ng-template>
+                      </mat-list-option>
+                    </mat-selection-list>
+                    <ng-template #elseNoDocuments>
+                      <span style="
+                      background-color: #ECEFF1;
+                      padding: 20px;
+                      color: #424242 !important;
+                  ">No documents to show</span>
+                    </ng-template>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+    </div>
+    <div class="offer-controls">
+      <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="onAddOffer()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+</div>
+  

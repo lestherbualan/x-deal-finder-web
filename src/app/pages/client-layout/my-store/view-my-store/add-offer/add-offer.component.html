@@ -1,0 +1,81 @@
+<mat-progress-bar mode="query" *ngIf="isLoading"></mat-progress-bar>
+<h4 mat-dialog-title>{{isNew ? 'Create New Offer' : 'Update offer'}}</h4>
+
+<div mat-dialog-content>
+  <div fxFlex="100" fxLayout="column">
+    <form [formGroup]="offerForm" fxLayout="column" id="offerForm" fxLayoutAlign="center" >
+      <fieldset fxFlex="100" fxLayout="column" [disabled]="isLoading">
+        <div class="thumb" (click)="thumbnailFile.click()">
+          <div class="thumb-cover"></div>
+          <input #thumbnailFile id="thumbnailInput" type="file" (change)="loadProfilePicture($event)" accept="image/bmp, image/jpeg, image/x-png, image/png"/>
+          <img [src]="thumbnail" id="thumbnail" (error)="profilePicErrorHandler($event)">
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            placeholder="Name"
+            formControlName="name">
+            <mat-error *ngIf="getError('name') !== (null || undefined)">{{
+              (getError('name') && getError('name').required ? 'Please enter name' : '')
+            }}</mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              placeholder="Description"
+              formControlName="description"
+              style="height: 100px;"></textarea>
+              <mat-error *ngIf="getError('description') !== (null || undefined)">{{
+                (getError('description') && getError('description').required ? 'Please enter Description' : '')
+              }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}" (click)="picker.open()">
+            <mat-label>Due date</mat-label>
+            <input
+              matInput
+              placeholder="Due date"
+              formControlName="due"
+              [matDatepicker]="picker">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="getError('due') !== (null || undefined)">{{
+                (getError('due') && getError('due').required ? 'Please enter due date' : '')
+              }}</mat-error>
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline" style="cursor:pointer!important" appearance="outline" fxFlex="100">
+            <mat-label>Select Offer type</mat-label>
+            <mat-select formControlName="offerTypeId" [disabled]="isLoading">
+              <mat-option *ngFor="let type of offerTypesLookup" [value]="type.offerTypeId">{{type.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <div>
+    <button
+      mat-flat-button
+      [disabled]="isProcessing || isLoading"
+      cdkFocusInitial
+      (click)="onDismiss()"
+    >
+      Cancel
+    </button>
+    <button
+      mat-flat-button
+      [disabled]="isLoading || isProcessing || !offerForm.valid"
+      color="primary"
+      form="offerForm"
+      type="submit"
+      (click)="onSubmit()">
+      Save
+    </button>
+  </div>
+</div>

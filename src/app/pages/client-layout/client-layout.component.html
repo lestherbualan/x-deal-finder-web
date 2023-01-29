@@ -1,0 +1,56 @@
+<mat-toolbar color="primary">
+  <div class="container">
+    <button mat-icon-button id="btn-sidebar" (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="title">
+      <a routerLink="/"><h3>{{title}}</h3></a>
+    </div>
+    <div class="menu">
+      <button mat-flat-button color="primary" routerLink="search/store" *ngIf="showStoresMenu">Find Stores</button>
+    </div>
+    <div class="search" *ngIf="!hideSearch">
+      <input placeholder="Find promos/offers/discounts" [formControl]="searchKeywordCtrl" (keyup.enter)="search()">
+      <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="search()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+    <button id="btn-header-profile" mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item routerLink="account/profile-settings">
+        <mat-icon>settings</mat-icon>
+        <span>Profile Settings</span>
+      </button>
+      <button mat-menu-item routerLink="my-store">
+        <mat-icon>store</mat-icon>
+        <span>My Store</span>
+      </button>
+      <button mat-menu-item (click)="handleSignOut()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Sign Out</span>
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" [opened]="opened" [mode]="!opened ? 'over': 'side'" fxHide fxShow.lt-sm>
+    <div class="side-nav-header">
+      <h3 class="side-nav-title"><strong>{{title}}</strong></h3>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <app-menu-list-item [item]="{ displayName: 'Home',iconName: 'home', route: 'home', isParent: false }" (onChildItemClick)="!opened ? sidenav.toggle() : false" (click)="!opened? sidenav.toggle() : false"></app-menu-list-item>
+      <app-menu-list-item [item]="{ displayName: 'Deals for today',iconName: 'today', route: 'today', isParent: false }" (onChildItemClick)="!opened ? sidenav.toggle() : false" (click)="!opened? sidenav.toggle() : false"></app-menu-list-item>
+      <app-menu-list-item [item]="{ displayName: 'Profile Settings',iconName: 'settings', route: 'account/profile-settings', isParent: false }" (onChildItemClick)="!opened ? sidenav.toggle() : false" (click)="!opened? sidenav.toggle() : false"></app-menu-list-item>
+      <app-menu-list-item [item]="{ displayName: 'My Store',iconName: 'store', route: 'my-store', isParent: false }" (onChildItemClick)="!opened ? sidenav.toggle() : false" (click)="!opened? sidenav.toggle() : false"></app-menu-list-item>
+      <app-menu-list-item [item]="{ displayName: 'Sign Out', iconName: 'exit_to_app' }" (click)="handleSignOut()"></app-menu-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

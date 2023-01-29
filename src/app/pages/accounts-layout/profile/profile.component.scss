@@ -1,0 +1,89 @@
+
+.page-view-container {
+    .content-inner {
+      .mat-form-field {
+        &.isLargeScreen{
+          padding-right: 10px!important;
+        }
+      }
+  
+      form {
+        fieldset {
+          padding: 0!important;
+          margin: 0!important;
+          border: none!important;
+          min-width: 0!important;
+        }
+      }
+  
+  
+      .group-info {
+        align-items: center;
+        column-gap: 10px;
+        mat-icon {
+  
+        }
+        .group-info-text {
+          margin: 0!important;
+        }
+      }
+    }
+  }
+  
+  
+@mixin object-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+$circleSize: 165px;
+$radius: 100px;
+$fontColor: rgb(250,250,250);
+
+.profile-pic {
+  color: transparent;
+  transition: all .3s ease;
+  @include object-center;
+  position: relative;
+  transition: all .3s ease;
+  
+  input {
+    display: none;
+  }
+  
+  img {
+    position: absolute;
+    width: $circleSize;
+    height: $circleSize;
+    border-radius: $radius;
+    z-index: 0;
+    object-position: center;
+    object-fit: contain;
+    box-shadow: 0 0 10px 0 rgb(122 122 122 / 46%);
+  }
+  
+  .-label {
+    cursor: pointer;
+    height: $circleSize;
+    width: $circleSize;
+  }
+  
+  &:hover {
+    .-label {
+      @include object-center;
+      background-color: rgba(0,0,0,.8);
+      z-index: 10000;
+      color: $fontColor;
+      transition: background-color .2s ease-in-out;
+      border-radius: $radius;
+      margin-bottom: 0;
+    }
+  }
+  
+  span {
+    display: inline-flex;
+    padding: .2em;
+    height: 2em;
+  }
+}

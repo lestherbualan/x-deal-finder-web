@@ -1,0 +1,67 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+span {
+  margin: 0 !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.add-store-dialog {
+  max-width: 500px !important;
+  width: 500px !important;
+}
+
+.action {
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+}
+
+.mat-dialog-container {
+  app-add-store {
+    .mat-dialog-content {
+      max-height: 100% !important;
+    }
+  }
+}
+.desc {
+  -webkit-line-clamp: 4;
+  margin: 0 !important;
+  display: -webkit-box;
+  max-width: 100%;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+mat-card-content  {
+  width: 100%;
+  .header {
+    width: 100%;
+    display: flex;
+    flex-direction: row!important;
+    .title-container {
+      display: flex;
+      flex-direction: column!important;
+      flex-grow: 1;
+      .title {
+        display: flex;
+        flex-direction: row!important;
+        align-items: center;
+        a {
+          color: #009688 !important;
+          text-decoration: none;
+          font-size: 20px;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  
+  }
+}

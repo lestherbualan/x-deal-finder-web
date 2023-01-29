@@ -1,0 +1,104 @@
+<mat-progress-bar mode="query" *ngIf="isLoading"></mat-progress-bar>
+<h4 mat-dialog-title>{{isNew ? 'Submit New Store Request' : 'Update store'}}</h4>
+
+<div mat-dialog-content>
+  <div fxFlex="100" fxLayout="column">
+    <form [formGroup]="storeForm" fxLayout="column" id="storeForm" fxLayoutAlign="center" >
+      <fieldset fxFlex="100" fxLayout="column" [disabled]="isLoading">
+
+        <div class="thumb" (click)="thumbnailFile.click()">
+          <div class="thumb-cover"></div>
+          <input #thumbnailFile id="thumbnailInput" type="file" (change)="loadProfilePicture($event)" accept="image/bmp, image/jpeg, image/x-png, image/png"/>
+          <img [src]="thumbnail" id="thumbnail" (error)="profilePicErrorHandler($event)">
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            placeholder="Name"
+            formControlName="name">
+            <mat-error *ngIf="getError('name') !== (null || undefined)">{{
+              (getError('name') && getError('name').required ? 'Please enter name' : '')
+            }}</mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              placeholder="Description"
+              formControlName="description"
+              style="height: 100px;"></textarea>
+              <mat-error *ngIf="getError('description') !== (null || undefined)">{{
+                (getError('description') && getError('description').required ? 'Please enter Description' : '')
+              }}</mat-error>
+          </mat-form-field>
+          
+          <div fxFlex fxLayoutAlign="start" fxLayoutGap="10" *ngIf="isNew">
+            <button mat-stroked-button matTooltip="Add" (click)="uploadAttachmentFile.click()" [disabled]="isProcessing">
+              <mat-icon>attach_file</mat-icon>
+            </button>
+            <input #uploadAttachmentFile style="display: none;" type="file" (change)="loadAttachment($event)" 
+            accept="image/bmp, 
+            image/jpeg, 
+            image/x-png, 
+            image/png, 
+            application/msword, 
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document, 
+            application/vnd.ms-excel,
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+            application/vnd.ms-powerpoint,
+            application/vnd.openxmlformats-officedocument.presentationml.presentation,
+            application/pdf,
+            application/rtf,
+            text/plain
+            "/>
+          </div>
+          <div fxFlex="100" fxLayout="column" fxLayoutAlign="start" *ngIf="isNew">
+            <br>
+            <mat-selection-list #documents [multiple]="false" *ngIf="storeDocuments.length > 0; else elseNoDocuments">
+              <mat-list-option *ngFor="let docs of storeDocuments" [disableRipple]="true">
+                <div style="display:flex; justify-content:space-between;align-items:center">
+                  <h3> {{docs.originalFileName}}</h3>
+                  <div>
+                    <button mat-icon-button (click)="removeAttachmentFile(docs.storeDocumentId)" [disabled]="isProcessing || isUploading">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </mat-list-option>
+            </mat-selection-list>
+            <ng-template #elseNoDocuments>
+              <spa style="
+              background-color: #ECEFF1;
+              padding: 20px;
+              color: #424242 !important;
+          ">No documents to show</spa>
+            </ng-template>
+          </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <div>
+    <button
+      mat-flat-button
+      [disabled]="isProcessing || isLoading"
+      cdkFocusInitial
+      (click)="onDismiss()"
+    >
+      Cancel
+    </button>
+    <button
+      mat-flat-button
+      [disabled]="isLoading || isProcessing || !storeForm.valid"
+      color="primary"
+      form="storeForm"
+      type="submit"
+      (click)="onSubmit()">
+      Save
+    </button>
+  </div>
+</div>

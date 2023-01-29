@@ -1,0 +1,155 @@
+<div class="page-view-container">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="20">
+        <div fxLayout="column" fxFlex.gt-xs="33.33%" fxFlex="100" class="store-info">
+            <mat-card class="mat-elevation-z4">
+              <mat-card-content fxLayout="column" >
+                <div class="thumb">
+                  <div class="thumb-cover"></div>
+                  <img [src]="getThumbnail" (error)="profilePicErrorHandler($event)">
+                </div>
+                <div fxFlex="100" fxLayout="column" fxLayoutAlign="start" class="info">
+                  <div fxFlex="100" fxLayout="row" class="group-info">
+                    <h2 class="group-info-text"*ngIf="!isLoading; else elseLoadinguFullName">
+                      <strong>{{storeData.name}}</strong>
+                    </h2>
+                    <ng-template #elseLoadinguFullName>
+                      <ngx-skeleton-loader fxFlex [theme]="{ height: '20px', width: '20%'}"></ngx-skeleton-loader>
+                    </ng-template>
+                  </div>
+                  <div fxFlex="100" fxLayout="row" class="group-info">
+                    <mat-icon *ngIf="storeData.reviews < 1">star_border</mat-icon>
+                    <mat-icon *ngIf="storeData.reviews > 0 && storeData.reviews < 5">star_half</mat-icon>
+                    <mat-icon *ngIf="storeData.reviews >= 5">star</mat-icon>
+                    <h3 class="group-info-text"*ngIf="!isLoading; else elseLoadinguFullName">&nbsp;{{storeData.reviews}} Ratings</h3>
+                    <ng-template #elseLoadinguFullName>
+                      <ngx-skeleton-loader fxFlex [theme]="{ height: '20px', width: '20%'}"></ngx-skeleton-loader>
+                    </ng-template>
+                  </div>
+                  <div fxFlex="100" fxLayout="row" class="group-info">
+                    <h4 style="font-weight: 100;" class="group-info-text"*ngIf="!isLoading; else elseLoadingOfferTypes">
+                      {{storeData.storeOfferTypes}}
+                    </h4>
+                    <ng-template #elseLoadingOfferTypes>
+                      <ngx-skeleton-loader fxFlex [theme]="{ height: '20px', width: '20%'}"></ngx-skeleton-loader>
+                    </ng-template>
+                  </div>
+                  <div fxFlex="100" fxLayout="row" class="group-info">
+                    <h3 style="font-weight: 400;" class="group-info-text" *ngIf="!isLoading; else elseLoadinguUsername">{{storeData.description}}</h3>
+                    <ng-template #elseLoadinguUsername>
+                      <ngx-skeleton-loader fxFlex [theme]="{ height: '20px', width: '20%'}"></ngx-skeleton-loader>
+                    </ng-template>
+                  </div>
+                  <div fxFlex="100" fxLayout="column" class="group-info">
+                    <h3>Rate this store</h3>
+                    <div style="width: 100%;">
+                      <ngx-material-rating #rate (click)="onRate(rate.value)" [value]="userStoreReviews" [disabled]="isSubmitingReviews || isLoading">
+                      </ngx-material-rating>
+                      <button mat-stroked-button matTooltip="Back" (click)="onRate(0)" *ngIf="userStoreReviews > 0" [disabled]="isProcessing || isUploading">
+                        <span>Reset</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+              <mat-card-actions style="padding: 16px;">
+                <button mat-stroked-button matTooltip="Back" routerLink="/search/store" [disabled]="isProcessing || isUploading">
+                  <span>Back</span>
+                </button>
+              </mat-card-actions>
+            </mat-card>
+        </div>
+        <div fxFlex>
+          <mat-tab-group>
+            <mat-tab [label]="'Offers(' + offersCount +')'">
+              <div fxLayout="column">
+                <div class="search-control" fxFlex="100" fxLayoutGap.gt-sm="10" fxLayoutGap="0" fxLayout.gt-sm="row" fxLayout="column">
+                  <div fxFlex="100" fxFlex.gt-sm="50%" >
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                      <mat-label>Search</mat-label>
+                      <input
+                        #searchKeywordInput
+                        matInput
+                        [formControl]="searchKeywordCtrl"
+                        type="search"
+                        placeholder="Search"
+                        [disabled]="isLoadingLookup"
+                        (keydown)="$event.key === 'Enter' ? getOffers(storeId) : true">
+                        <button mat-icon-button matSuffix matTooltip="Search" #searchButton [disabled]="isProcessing" (click)="getOffers(storeId)">
+                          <mat-icon>search</mat-icon>
+                        </button>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="100" fxFlex.gt-sm="50%" >
+                    <mat-form-field style="width: 100%;" appearance="outline" >
+                      <mat-label>Type</mat-label>
+                      <mat-chip-list #offerTypeList [disabled]="isLoadingLookup">
+                        <mat-chip
+                          *ngFor="let offerType of selectedOfferType"
+                          (removed)="remove(offerType)">
+                          {{offerType}}
+                          <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </mat-chip>
+                        <input
+                          placeholder="Search type..."
+                          #offerTypeInput
+                          [formControl]="offerTypeCtrl"
+                          [matAutocomplete]="offerTypeAutocomplete"
+                          [matChipInputFor]="offerTypeList"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+                      </mat-chip-list>
+                      <mat-autocomplete #offerTypeAutocomplete="matAutocomplete" (optionSelected)="selected($event)">
+                        <ng-container *ngFor="let offerType of filteredOfferType | async">
+                          <mat-option *ngIf="!selectedOfferType.includes(offerType)" [value]="offerType">
+                            {{offerType}}
+                          </mat-option>
+                        </ng-container>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxFlex="100" fxLayout="column" *ngIf="!isLoading; else elseLoadingOffers">
+                  <div fxLayout.gt-sm="row wrap" *ngIf="storeData.offers.length > 0; else elseNoOfferToShow" >
+                    <div class="offers" fxFlex.gt-sm="33.3%" *ngFor="let offer of currentItemsToShow, let i=index;">
+                      <mat-card fxLayout="row" fxLayout.gt-sm="column" style="cursor: pointer!important;" (click)="viewOffer(offer)">
+                        <mat-card-content>
+                          <div fxLayout="row" fxLayout.gt-sm="column" class="card-details">
+                            <div class="thumb">
+                              <div class="thumb-cover"></div>
+                              <img [src]="offer.thumbnailFile ? offer.thumbnailFile.url : ''" (error)="profilePicErrorHandler($event)">
+                            </div>
+                            <div class="content" fxLayout="column" fxFlex="100">
+                              <span class="type">{{offer.offerType.name}}</span>
+                              <span class="due">{{offer.due| date: 'MMM dd, yyyy'}}</span>
+                              <span class="desc">{{offer.name}}</span>
+                            </div>
+                          </div>
+                        </mat-card-content>
+                      </mat-card>
+                    </div>
+                    <mat-paginator style="display: flex; width: 100%;" (page)="onPageChange($event)" [length]="storeData.offers.length" [pageSize]="15" [pageSizeOptions]="[15, 30, 60, 150]"></mat-paginator>
+                  </div>
+                  <ng-template #elseNoOfferToShow>
+                    <div fxLayout="column" fxFlex>
+                      <div style="display: flex;height: 100px;">
+                        <div style="display: flex;width: 100%;height: 100%;justify-content: center;align-items: center;flex-direction: column;">
+                          <mat-icon>search</mat-icon>
+                          <span>No offers to show</span>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+              <ng-template #elseLoadingOffers>
+                <span>
+                  Loading offers...
+                </span>
+              </ng-template>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+    </div>
+</div>
+  

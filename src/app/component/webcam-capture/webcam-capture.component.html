@@ -1,0 +1,29 @@
+
+<div #webcamContainer class="webcam-container">
+    <button color="primary" class="close" mat-mini-fab (click)="close()" >
+        <mat-icon>close</mat-icon>
+    </button>
+    <webcam
+        [style]="hasCaptured ? 'visibility: hidden' : ''"
+        [allowCameraSwitch]="false"
+        [width]="500"
+        [trigger]="invokeObservable" 
+        [videoOptions]="videoOptions"
+        (imageCapture)="captureImg($event)">
+    </webcam>
+    <div class="preview" *ngIf="hasCaptured">
+        <img [src]="this.sysImage">
+    </div>
+
+    <div class="controls">
+        <button mat-fab color="warn" (click)="getSnapshot()" *ngIf="!hasCaptured">
+            <mat-icon>camera_alt</mat-icon>
+        </button>
+        <button mat-fab (click)="retake()" *ngIf="hasCaptured">
+            <mat-icon>close</mat-icon>
+        </button>
+        <button mat-fab (click)="ok()" *ngIf="hasCaptured">
+            <mat-icon>check</mat-icon>
+        </button>
+    </div>
+</div>

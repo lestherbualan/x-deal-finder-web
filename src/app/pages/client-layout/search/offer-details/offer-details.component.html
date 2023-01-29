@@ -1,0 +1,82 @@
+<h4 *ngIf="!isLoading" mat-dialog-title>Offer details</h4>
+
+<div mat-dialog-content>
+  <div fxLayout="column" fxLayoutGap="10px" *ngIf="!isLoading; else elseLoading;">
+    <div class="thumb" >
+      <div class="thumb-cover"></div>
+      <img [src]="getThumbnail" id="profilePicture" (error)="profilePicErrorHandler($event)">
+    </div>
+    <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+      <strong>Name</strong>
+      <h3 class="group-info-text">{{data.name}}</h3>
+    </div>
+    <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+      <strong>Description</strong>
+      <h3 class="group-info-text">{{data.description}}</h3>
+    </div>
+    <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+      <strong>Offer type</strong>
+      <h3 class="group-info-text">{{data.offerType.name}}</h3>
+    </div>
+    <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+      <strong>Due date</strong>
+      <h3 class="group-info-text">{{data.due | date: 'MMMM dd, yyyy'}}</h3>
+    </div>
+    <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+      <strong>Store</strong>
+      <h3 class="group-info-text">{{data.store.name}}</h3>
+    </div>
+    <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+      <strong>Contact</strong>
+      <h3 class="group-info-text">{{data.store.user.mobileNumber}}</h3> 
+    </div>
+  </div>
+  <ng-template #elseLoading>
+    <div fxLayout="column" fxLayoutGap="10px">
+      <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+        <strong>Name</strong>
+        <ngx-skeleton-loader [theme]="{ height: '30px'}"></ngx-skeleton-loader>
+      </div>
+      <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+        <strong>Description</strong>
+        <ngx-skeleton-loader [theme]="{ height: '30px'}"></ngx-skeleton-loader>
+      </div>
+      <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+        <strong>Offer type</strong>
+        <ngx-skeleton-loader [theme]="{ height: '30px'}"></ngx-skeleton-loader>
+      </div>
+      <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+        <strong>Due date</strong>
+        <ngx-skeleton-loader [theme]="{ height: '30px'}"></ngx-skeleton-loader>
+      </div>
+      <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+        <strong>Store</strong>
+        <ngx-skeleton-loader [theme]="{ height: '30px'}"></ngx-skeleton-loader>
+      </div>
+      <div fxFlex="100" fxLayout="column" fxLayoutAlign="start">
+        <strong>Contact</strong>
+        <ngx-skeleton-loader [theme]="{ height: '30px'}"></ngx-skeleton-loader>
+      </div>
+    </div>
+</ng-template>
+
+</div>
+<div mat-dialog-actions *ngIf="!isLoading">
+  <button
+    mat-stroked-button
+    [disabled]="isLoading"
+    cdkFocusInitial
+    mat-dialog-close>
+    Close
+  </button>
+  <div fxFlex></div>
+  <button
+    *ngIf="showStoreDetailsButton"
+    mat-raised-button
+    [disabled]="isLoading"
+    cdkFocusInitial
+    color="primary"
+    (click)="storeDetails()">
+    Store details
+  </button>
+</div>
