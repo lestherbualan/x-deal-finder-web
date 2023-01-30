@@ -10,7 +10,7 @@
       <button mat-flat-button color="primary" routerLink="search/store" *ngIf="showStoresMenu">Find Stores</button>
     </div>
     <div class="search" *ngIf="!hideSearch">
-      <input placeholder="Find promos/offers/discounts" [formControl]="searchKeywordCtrl" (keyup.enter)="search()">
+      <input placeholder="Search Product Categories/Name/Promos/Discounts" [formControl]="searchKeywordCtrl" (keyup.enter)="search()">
       <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="search()">
         <mat-icon>search</mat-icon>
       </button>

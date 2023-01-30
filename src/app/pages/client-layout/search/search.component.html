@@ -1,5 +1,5 @@
 <div class="page-view-container">
-  <h2>Search offers</h2>
+  <h2>Search Offers</h2>
     <div fxLayout="column" fxLayout.gt-xs="row">
       <div class="search-control" fxFlex="30%" fxLayout="column" fxLayoutAlign="top">
         <h3 ><strong>{{searchOfferData.length}} Offers found</strong></h3>
@@ -23,7 +23,7 @@
             <div fxFlex="100" fxFlex="100" >
                 <div fxFlex.gt-xs="80%" fxFlex="90%">
                     <mat-form-field style="width: 100%;" appearance="outline" >
-                      <mat-label>Type</mat-label>
+                      <mat-label>Product Categories</mat-label>
                       <mat-chip-list #offerTypeList [disabled]="isLoadingLookup">
                         <mat-chip
                           *ngFor="let offerType of selectedOfferType"
@@ -34,7 +34,7 @@
                           </button>
                         </mat-chip>
                         <input
-                          placeholder="Search offer type..."
+                          placeholder="Search Product Categories.."
                           #offerTypeInput
                           [formControl]="offerTypeCtrl"
                           [matAutocomplete]="offerTypeAutocomplete"
@@ -89,7 +89,7 @@
             <div style="display: flex;height: 100px;">
               <div style="display: flex;width: 100%;height: 100%;justify-content: center;align-items: center;flex-direction: column;">
                 <mat-icon style="font-size: 3em;width: 100%;height: 100px;display: flex;text-align: center;align-items: center;justify-content: center;">search</mat-icon>
-                <h1><strong>No offers to show</strong></h1>
+                <h1><strong>No Offers to show</strong></h1>
               </div>
             </div>
           </div>
