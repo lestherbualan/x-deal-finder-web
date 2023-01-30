@@ -46,7 +46,8 @@ export class AddOfferComponent implements OnInit {
       description: ['', Validators.required],
       due: [new Date(), Validators.required],
       offerTypeId: [null, Validators.required],
-      
+      dealOffer: ['', Validators.required],
+      location: ['', Validators.required],
     });
     this.initLookup();
     dialogRef.disableClose = true;
@@ -154,6 +155,7 @@ export class AddOfferComponent implements OnInit {
               dialogRef.componentInstance.isProcessing = this.isProcessing;
             }else{
               if(this.isNew) {
+                console.log(param)
                 await this.
                 offersService
                   .create(param)

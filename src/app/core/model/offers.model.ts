@@ -4,6 +4,8 @@ export class Offers {
     offerId: string;
     name: string;
     description: string;
+    location: string;
+    dealOffer: string;
     due: Date;
     offerType: OfferTypes;
     store: Stores;

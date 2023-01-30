@@ -33,6 +33,28 @@
               }}</mat-error>
           </mat-form-field>
 
+          <mat-form-field appearance="outline">
+            <mat-label>Deal Offer</mat-label>
+            <input
+              matInput
+              placeholder="Deal Offer"
+              formControlName="dealOffer">
+              <!-- <mat-error *ngIf="getError('dealOffer') !== (null || undefined)">{{
+                (getError('dealOffer') && getError('dealOffer').required ? 'Please enter Deal Offer' : '')
+              }}</mat-error> -->
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Location</mat-label>
+            <input
+              matInput
+              placeholder="Location"
+              formControlName="location">
+              <!-- <mat-error *ngIf="getError('Location') !== (null || undefined)">{{
+                (getError('Location') && getError('Location').required ? 'Please enter Location' : '')
+              }}</mat-error> -->
+          </mat-form-field>
+
           <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}" (click)="picker.open()">
             <mat-label>Due date</mat-label>
             <input
