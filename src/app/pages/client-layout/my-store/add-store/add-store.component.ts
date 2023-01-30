@@ -127,8 +127,8 @@ export class AddStoreComponent implements OnInit {
               this.isProcessing = false;
               dialogRef.componentInstance.isProcessing = this.isProcessing;
             }else{
+              // for new post store
               if(this.isNew) {
-                console.log('here')
                 await this.
                 storesService
                   .add(param)
@@ -137,6 +137,7 @@ export class AddStoreComponent implements OnInit {
                       if (res.success) {
                         this.conFirm.emit(true);
                         this.snackBar.snackbarSuccess("Store Request Submitted. Please wait for approval!");
+                        console.log(res)
                         dialogRef.close();
                         this.isProcessing = false;
                         dialogRef.componentInstance.isProcessing = this.isProcessing;
@@ -160,6 +161,7 @@ export class AddStoreComponent implements OnInit {
                   );
               }
               else {
+                console.log('not new')
                 await this.
                 storesService
                   .udpdate(param)
