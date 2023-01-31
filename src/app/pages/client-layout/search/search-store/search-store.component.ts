@@ -69,7 +69,7 @@ export class SearchStoreComponent implements OnInit {
           this.offerTypesLookup = getOfferTypesService.data;
           this.filteredOfferType = this.offerTypeCtrl.valueChanges.pipe(
             startWith(null),
-            map((value: string | null) => (value ? this.allOfferTypes.filter(x=>x.toLowerCase().includes(value.toLowerCase())) : this.allOfferTypes.slice())),
+            map((value: string | null) => (value ? this.allOfferTypes.sort().filter(x=>x.toLowerCase().includes(value.toLowerCase())) : this.allOfferTypes.sort().slice())),
           );
       },
       (error) => console.error(error),
