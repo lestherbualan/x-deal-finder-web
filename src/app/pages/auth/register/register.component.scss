@@ -19,13 +19,21 @@
     }
   }
 }
+.action-button-container{
+  width: 100%;
+}
+.action-button{
+  float: right;
+}
+.no-padding-right{
+  padding-right: 0px !important;
+}
 .content {
   display:flex;
   height:100%;
   align-items: center;
   justify-content: center;
 
-  margin-top: 100px;
   flex-direction: column;
   box-sizing: border-box;
   justify-content: center;
@@ -54,6 +62,7 @@
           padding-right: 10px!important;
         }
       }
+      width: 100%;
     }
 
     form {

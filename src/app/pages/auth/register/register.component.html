@@ -2,14 +2,11 @@
   <div fxFlex fxLayout="column" class="content-inner" fxFlex="60" fxFlex.md="80" fxFlex.lg="70" fxFlex.sm="100" fxFlex.xs="100" >
     <h3 *ngIf="isAdminUserType">Request for admin account</h3>
     <mat-card fxFlex class="mat-elevation-z4">
-      <div class="signup-stepper-header">
-        <h2 *ngIf="stepper.selectedIndex===0">Create account</h2>
-        <h2 *ngIf="stepper.selectedIndex===1">Contact</h2>
-        <h2 *ngIf="stepper.selectedIndex===2">Personal information</h2>
-      </div>
+      <h1 *ngIf="!isAdminUserType">Create Account</h1>
       <mat-stepper [orientation]="stepperOrientation" [linear]="isLinear" #stepper (selectionChange)="onStepChange($event)" animationDuration="200ms">
         <mat-step [stepControl]="formCreateAccount" label="Create account" flex>
-          <form [formGroup]="formCreateAccount" fxLayout="row wrap" (ngSubmit)="onSubmitFormCreateAccount()">
+          <!-- Create Account -->
+          <form [formGroup]="formCreateAccount" *ngIf="formCreateAccount" fxLayout="row wrap" (ngSubmit)="onSubmitFormCreateAccount()">
             <fieldset fxFlex="100" fxLayout="row wrap" [disabled]="isProcessing">
               <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row" >
                 <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}">
@@ -45,69 +42,7 @@
                     }}</mat-error>
                 </mat-form-field>
               </div>
-              <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row" >
-                <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}">
-                  <mat-label>Username</mat-label>
-                  <input
-                    matInput
-                    placeholder="Username"
-                    formControlName="username"
-                    oninput="this.value = this.value.toLowerCase()">
-                    <mat-error *ngIf="getError(formCreateAccount, 'username') !== (null || undefined)">{{
-                      (getError(formCreateAccount, 'username') && getError(formCreateAccount, 'username').required ? 'Please enter your username' : '')||
-                      (getError(formCreateAccount, 'username') && getError(formCreateAccount, 'username').notAvailable ? 'The username entered is not available. Try another one' : '')
-                    }}</mat-error>
-                </mat-form-field>
-                <div fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}"></div>
-                <div fxFlex="33.33%" class="cell" ></div>
-              </div>
-              <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row">
-                <mat-form-field appearance="outline" fxFlex="50%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}">
-                  <mat-label>Password</mat-label>
-                  <input
-                    matInput
-                    #password
-                    type="password"
-                    placeholder="Password"
-                    formControlName="password">
-                    <mat-icon
-                      class="icon-right"
-                      (click)="password.type = (password.type === 'password' ? 'text' : 'password')"
-                      style="cursor: pointer;"
-                      matSuffix>{{ password.type === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
-                    <mat-error *ngIf="getError(formCreateAccount, 'password') !== (null || undefined)">{{
-                      (getError(formCreateAccount, 'password') && getError(formCreateAccount, 'password').required ? 'Please enter your password' : '')
-                    }}</mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" fxFlex="50%" class="cell" >
-                  <mat-label>Confirm password</mat-label>
-                  <input
-                    matInput
-                    type="password"
-                    #confirmPassword
-                    placeholder="Confirm password"
-                    formControlName="confirmPassword"
-                    [errorStateMatcher]="matcher">
-                    <mat-icon
-                      class="icon-right"
-                      (click)="confirmPassword.type = (confirmPassword.type === 'password' ? 'text' : 'password')"
-                      style="cursor: pointer;"
-                      matSuffix>{{ confirmPassword.type === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
-                    <mat-error *ngIf="getError(formCreateAccount, 'confirmPassword') !== (null || undefined)">{{
-                      (getError(formCreateAccount, 'confirmPassword') && getError(formCreateAccount, 'confirmPassword').notMatched ? 'Please confirm your password' : '')
-                    }}</mat-error>
-                </mat-form-field>
-              </div>
-              <div>
-                <button mat-raised-button color="primary" [disabled]="!formCreateAccount.valid || isProcessing">Next</button>
-              </div>
             </fieldset>
-          </form>
-        </mat-step>
-        <mat-step [stepControl]="formContact" label="Contact">
-          <form [formGroup]="formContact" fxLayout="column">
-
             <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row">
               <mat-form-field appearance="outline" fxFlex="50%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}">
                 <mat-label>Email</mat-label>
@@ -117,45 +52,25 @@
                   placeholder="Email"
                   formControlName="email"
                   oninput="this.value = this.value.toLowerCase()">
-                  <mat-error *ngIf="getError(formContact, 'email') !== (null || undefined)">{{
-                    (getError(formContact, 'email') && getError(formContact, 'email').required ? 'Please enter your email' : '') ||
-                    (getError(formContact, 'email') && getError(formContact, 'email').email ? 'Please enter a valid email' : '')
+                  <mat-error *ngIf="getError(formCreateAccount, 'email') !== (null || undefined)">{{
+                    (getError(formCreateAccount, 'email') && getError(formCreateAccount, 'email').required ? 'Please enter your email' : '') ||
+                    (getError(formCreateAccount, 'email') && getError(formCreateAccount, 'email').email ? 'Please enter a valid email' : '')
                   }}</mat-error>
               </mat-form-field>
-              <mat-form-field appearance="outline" fxFlex="50%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}">
+              <mat-form-field appearance="outline" fxFlex="50%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}" class="no-padding-right">
                 <mat-label>Mobile number</mat-label>
                 <input
                   matInput
                   placeholder="Mobile number"
                   formControlName="mobileNumber"
                   (keypress)="keyPressNumberOnly($event)" >
-                  <mat-error *ngIf="getError(formContact, 'mobileNumber') !== (null || undefined)">{{
-                    (getError(formContact, 'mobileNumber') && getError(formContact, 'mobileNumber').required ? 'Please enter your mobile number' : '') ||
-                    (getError(formContact, 'mobileNumber') && getError(formContact, 'mobileNumber').minlength ? 'Please enter a valid mobile number' : '') ||
-                    (getError(formContact, 'mobileNumber') && getError(formContact, 'mobileNumber').maxlength ? 'Please enter a valid 11 digit mobile number' : '')
+                  <mat-error *ngIf="getError(formCreateAccount, 'mobileNumber') !== (null || undefined)">{{
+                    (getError(formCreateAccount, 'mobileNumber') && getError(formCreateAccount, 'mobileNumber').required ? 'Please enter your mobile number' : '') ||
+                    (getError(formCreateAccount, 'mobileNumber') && getError(formCreateAccount, 'mobileNumber').minlength ? 'Please enter a valid mobile number' : '') ||
+                    (getError(formCreateAccount, 'mobileNumber') && getError(formCreateAccount, 'mobileNumber').maxlength ? 'Please enter a valid 11 digit mobile number' : '')
                   }}</mat-error>
               </mat-form-field>
             </div>
-            <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button mat-raised-button color="primary" matStepperNext [disabled]="!formContact.valid">Next</button>
-            </div>
-          </form>
-        </mat-step>
-        <mat-step [stepControl]="formPersonalInfo" label="Personal information">
-          <form [formGroup]="formPersonalInfo" fxLayout="column" (ngSubmit)="onSubmit()">
-            <mat-form-field appearance="outline">
-              <mat-label>Address</mat-label>
-              <textarea
-                matInput
-                placeholder="Address"
-                formControlName="address">
-              </textarea>
-              <mat-error *ngIf="getError(formPersonalInfo, 'address') !== (null || undefined)">{{
-                (getError(formPersonalInfo, 'address') && getError(formPersonalInfo, 'address').required ? 'Please enter your address' : '')
-              }}</mat-error>
-            </mat-form-field>
-
             <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row">
               <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}" (click)="picker.open()">
                 <mat-label>Birthdate</mat-label>
@@ -167,8 +82,8 @@
                   [matDatepicker]="picker">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
-                  <mat-error *ngIf="getError(formPersonalInfo, 'birthDate') !== (null || undefined)">{{
-                    (getError(formPersonalInfo, 'birthDate') && getError(formPersonalInfo, 'birthDate').required ? 'Please enter your birthdate' : '')
+                  <mat-error *ngIf="getError(formCreateAccount, 'birthDate') !== (null || undefined)">{{
+                    (getError(formCreateAccount, 'birthDate') && getError(formCreateAccount, 'birthDate').required ? 'Please enter your birthdate' : '')
                   }}</mat-error>
               </mat-form-field>
 
@@ -180,15 +95,80 @@
                   <mat-option value="2">Female</mat-option>
                   <mat-option value="3">Rather not say</mat-option>
                 </mat-select>
-                <mat-error *ngIf="getError(formPersonalInfo, 'genderId') !== (null || undefined)">{{
-                  (getError(formPersonalInfo, 'genderId') && getError(formPersonalInfo, 'genderId').required ? 'Please select gender' : '')
+                <mat-error *ngIf="getError(formCreateAccount, 'genderId') !== (null || undefined)">{{
+                  (getError(formCreateAccount, 'genderId') && getError(formCreateAccount, 'genderId').required ? 'Please select gender' : '')
                 }}</mat-error>
               </mat-form-field>
             </div>
+            <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row">
+              <mat-form-field appearance="outline">
+                <mat-label>Address</mat-label>
+                <textarea
+                  matInput
+                  placeholder="Address"
+                  formControlName="address">
+                </textarea>
+                <mat-error *ngIf="getError(formCreateAccount, 'address') !== (null || undefined)">{{
+                  (getError(formCreateAccount, 'address') && getError(formCreateAccount, 'address').required ? 'Please enter your address' : '')
+                }}</mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row" >
+              <mat-form-field appearance="outline" fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}">
+                <mat-label>Username</mat-label>
+                <input
+                  matInput
+                  placeholder="Username"
+                  formControlName="username"
+                  oninput="this.value = this.value.toLowerCase()">
+                  <mat-error *ngIf="getError(formCreateAccount, 'username') !== (null || undefined)">{{
+                    (getError(formCreateAccount, 'username') && getError(formCreateAccount, 'username').required ? 'Please enter your username' : '')||
+                    (getError(formCreateAccount, 'username') && getError(formCreateAccount, 'username').notAvailable ? 'The username entered is not available. Try another one' : '')
+                  }}</mat-error>
+              </mat-form-field>
+              <div fxFlex="33.33%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}"></div>
+              <div fxFlex="33.33%" class="cell" ></div>
+            </div>
+            <div fxFlex="100" fxLayout="column" fxLayout.gt-sm="row">
+              <mat-form-field appearance="outline" fxFlex="50%" class="cell" [ngClass.gt-sm]="{'isLargeScreen': true}">
+                <mat-label>Password</mat-label>
+                <input
+                  matInput
+                  #password
+                  type="password"
+                  placeholder="Password"
+                  formControlName="password">
+                  <mat-icon
+                    class="icon-right"
+                    (click)="password.type = (password.type === 'password' ? 'text' : 'password')"
+                    style="cursor: pointer;"
+                    matSuffix>{{ password.type === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
+                  <mat-error *ngIf="getError(formCreateAccount, 'password') !== (null || undefined)">{{
+                    (getError(formCreateAccount, 'password') && getError(formCreateAccount, 'password').required ? 'Please enter your password' : '')
+                  }}</mat-error>
+              </mat-form-field>
 
-            <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button mat-raised-button color="primary" [disabled]="!formPersonalInfo.valid">Create account</button>
+              <mat-form-field appearance="outline" fxFlex="50%" class="cell" >
+                <mat-label>Confirm password</mat-label>
+                <input
+                  matInput
+                  type="password"
+                  #confirmPassword
+                  placeholder="Confirm password"
+                  formControlName="confirmPassword"
+                  [errorStateMatcher]="matcher">
+                  <mat-icon
+                    class="icon-right"
+                    (click)="confirmPassword.type = (confirmPassword.type === 'password' ? 'text' : 'password')"
+                    style="cursor: pointer;"
+                    matSuffix>{{ confirmPassword.type === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
+                  <mat-error *ngIf="getError(formCreateAccount, 'confirmPassword') !== (null || undefined)">{{
+                    (getError(formCreateAccount, 'confirmPassword') && getError(formCreateAccount, 'confirmPassword').notMatched ? 'Please confirm your password' : '')
+                  }}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="action-button-container">
+              <button class="action-button" mat-raised-button color="primary" [disabled]="!formCreateAccount.valid">Create account</button>
             </div>
           </form>
         </mat-step>

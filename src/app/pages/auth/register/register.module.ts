@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../material/material.module';
 import { RegisterComponent } from './register.component';
+import {MatDividerModule} from '@angular/material/divider';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,7 @@ export const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+    MatDividerModule,
     RouterModule.forChild(routes)
   ]
 })

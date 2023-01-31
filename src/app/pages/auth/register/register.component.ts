@@ -50,29 +50,19 @@ export class RegisterComponent {
   }
   ngOnInit(): void {
     this.formCreateAccount = this._formBuilder.group({
+      // Create Account
       firstName: ['', Validators.required],
       middleName: [''],
       lastName: ['', Validators.required],
       username: ['', Validators.required],
       password: ['', Validators.required],
       confirmPassword : '',
-    }, { validators: this.checkPasswords });
-
-    this.formContact = this._formBuilder.group({
-      email: ['',
-      Validators.compose(
-          [Validators.email, Validators.required])],
-      mobileNumber: ['',
-      Validators.compose(
-          [Validators.minLength(11),Validators.maxLength(11), Validators.required])],
-    });
-
-
-    this.formPersonalInfo = this._formBuilder.group({
+      email: ['',Validators.compose([Validators.email, Validators.required])],
+      mobileNumber: ['',Validators.compose([Validators.minLength(11),Validators.maxLength(11), Validators.required])],
       address: ['', Validators.required],
       birthDate: ['', Validators.required],
       genderId: ['', Validators.required],
-    });
+    }, { validators: this.checkPasswords });
 
   }
   ngAfterViewInit(): void{
@@ -81,7 +71,7 @@ export class RegisterComponent {
     }, 500);
   }
 
-  get formData() { return Object.assign({}, this.formCreateAccount.value, this.formContact.value,  this.formPersonalInfo.value) }
+  get formData() { return Object.assign({}, this.formCreateAccount.value /*, this.formContact.value,  this.formPersonalInfo.value */) }
 
   checkPasswords: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => {
     const pass = group.get('password').value;
@@ -209,6 +199,7 @@ export class RegisterComponent {
   }
 
   getError(form: any, key:string){
+    console.log(form)
     let error:any = null;
     if(key === 'confirmPassword' && form.controls['confirmPassword']?.touched && this.formData.password !== this.formData.confirmPassword){
       form.controls['confirmPassword'].setErrors({notMatched: true})
