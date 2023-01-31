@@ -80,6 +80,7 @@ export class RegisterComponent {
   };
 
   onSubmitFormCreateAccount(){
+    console.log("registering")
     const params = this.formData;
     if(!this.formCreateAccount.valid){
       return;
@@ -88,9 +89,11 @@ export class RegisterComponent {
       this.isProcessing = true;
       this.authService.findByUsername(params.username)
       .subscribe(async res => {
+        console.log(res)
         if (res.success) {
           if(res.data ===null || res.data === undefined){
-            this.stepper.selectedIndex = 1;
+            this.onSubmit();
+            //this.stepper.selectedIndex = 1;
           }else{
             this.formCreateAccount.controls['username'].setErrors({notAvailable: true});
           }
@@ -115,7 +118,7 @@ export class RegisterComponent {
   }
 
   onSubmit(){
-    if(!this.formCreateAccount.valid || !this.formContact.valid || !this.formPersonalInfo.valid){
+    if(!this.formCreateAccount.valid){
       return;
     }
     if(this.isAdminUserType){
@@ -130,23 +133,24 @@ export class RegisterComponent {
     try{
       this.isProcessing = true;
       this.stepper.animationDuration = '0s';
-      this.stepper.selectedIndex = 3;
+      // this.stepper.selectedIndex = 3;
       this.authService.registerAdmin(this.formData)
       .subscribe(async res => {
         if (res.success) {
           this.isProcessing = false;
           this.isSuccessful = true;
+          this.stepper.selectedIndex = 1;
         } else {
           this.isProcessing = false;
           this.isSuccessful = false;
-          this.stepper.selectedIndex = 2;
+          // this.stepper.selectedIndex = 2;
           this.error = Array.isArray(res.message) ? res.message[0] : res.message, 'ok';
           this.snackBar.snackbarError(this.error);
         }
       }, async (err) => {
         this.isProcessing = false;
         this.isSuccessful = false;
-        this.stepper.selectedIndex = 2;
+        // this.stepper.selectedIndex = 2;
         this.error = Array.isArray(err.message) ? err.message[0] : err.message, 'ok';
         this.snackBar.snackbarError(this.error);
       });
@@ -162,23 +166,24 @@ export class RegisterComponent {
     try{
       this.isProcessing = true;
       this.stepper.animationDuration = '0s';
-      this.stepper.selectedIndex = 3;
+      
       this.authService.registerClient(this.formData)
       .subscribe(async res => {
         if (res.success) {
           this.isProcessing = false;
           this.isSuccessful = true;
+          this.stepper.selectedIndex = 1;
         } else {
           this.isProcessing = false;
           this.isSuccessful = false;
-          this.stepper.selectedIndex = 2;
+          // this.stepper.selectedIndex = 2;
           this.error = Array.isArray(res.message) ? res.message[0] : res.message, 'ok';
           this.snackBar.snackbarError(this.error);
         }
       }, async (err) => {
         this.isProcessing = false;
         this.isSuccessful = false;
-        this.stepper.selectedIndex = 2;
+        // this.stepper.selectedIndex = 2;
         this.error = Array.isArray(err.message) ? err.message[0] : err.message, 'ok';
         this.snackBar.snackbarError(this.error);
       });
@@ -199,7 +204,6 @@ export class RegisterComponent {
   }
 
   getError(form: any, key:string){
-    console.log(form)
     let error:any = null;
     if(key === 'confirmPassword' && form.controls['confirmPassword']?.touched && this.formData.password !== this.formData.confirmPassword){
       form.controls['confirmPassword'].setErrors({notMatched: true})

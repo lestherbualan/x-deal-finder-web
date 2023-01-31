@@ -211,6 +211,7 @@ export class StoreDetailsComponent implements OnInit {
           this.isLoading = false;
           this.storeData.offers = res.data;
           this.currentItemsToShow = res.data.slice(0 * 15, 0* 15 + 15)
+          console.log(res.data)
         } else {
           this.isLoading = false;
           this.error = Array.isArray(res.message) ? res.message[0] : res.message;

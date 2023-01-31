@@ -114,6 +114,8 @@ export class SearchComponent implements OnInit {
           this.isLoading = false;
           this.searchOfferData = res.data;
           this.currentOffersToShow = res.data.slice(0 * 15, 0* 15 + 15);
+          console.log('here')
+          console.log(this.currentOffersToShow)
         } else {
           this.isLoading = false;
           this.error = Array.isArray(res.message) ? res.message[0] : res.message;

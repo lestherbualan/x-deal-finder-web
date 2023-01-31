@@ -70,12 +70,15 @@
                           <img [src]="offer.thumbnailFile ? offer.thumbnailFile.url : ''" (error)="profilePicErrorHandler($event)">
                         </div>
                         <div class="content" fxLayout="column" fxFlex="100">
-                          <span class="type" fxLayout="row" style="align-items: center;gap: 5px" >
-                            <mat-icon>local_offer</mat-icon>
+                          <span style="font-size: 18px;">{{offer.name}}</span>
+                          <span class="type" fxLayout="row" style="align-items: center;gap: 5px; height: 15px; margin-top: 5px; font-weight: 500;" >
+                            <mat-icon style="font-size: 15px; color: gray; margin-top: 12px; margin-right: -7px;">local_offer</mat-icon>
                               {{offer.offerType.name}}
-                            </span>
-                          <span class="due">{{offer.due| date: 'MMM dd, yyyy'}}</span>
-                          <span class="desc">{{offer.name}}</span>
+                          </span>
+                          <span class="due" style="font-size: 10px;">{{offer.due| date: 'MMM dd, yyyy'}}</span>
+                          <div class="desc" style="text-overflow: ellipsis; width: 150px;white-space: nowrap; overflow: hidden; position: relative;
+                          display: inline-block;">{{offer.description}}</div>
+                          <span style="text-align: right; font-weight: 600;">{{offer.dealOffer}}</span>
                         </div>
                       </div>
                     </mat-card-content>

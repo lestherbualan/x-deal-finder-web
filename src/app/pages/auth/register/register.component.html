@@ -1,8 +1,12 @@
 <div class="content mat-app-background">
   <div fxFlex fxLayout="column" class="content-inner" fxFlex="60" fxFlex.md="80" fxFlex.lg="70" fxFlex.sm="100" fxFlex.xs="100" >
-    <h3 *ngIf="isAdminUserType">Request for admin account</h3>
+    <h1 *ngIf="isAdminUserType">Request for admin account</h1>
+    <h1 *ngIf="!isAdminUserType">Create Account</h1>
     <mat-card fxFlex class="mat-elevation-z4">
-      <h1 *ngIf="!isAdminUserType">Create Account</h1>
+      <div class="signup-stepper-header">
+        <h2 *ngIf="stepper.selectedIndex===0"></h2>
+        <h2 *ngIf="stepper.selectedIndex===1"></h2>
+      </div>
       <mat-stepper [orientation]="stepperOrientation" [linear]="isLinear" #stepper (selectionChange)="onStepChange($event)" animationDuration="200ms">
         <mat-step [stepControl]="formCreateAccount" label="Create account" flex>
           <!-- Create Account -->
@@ -168,7 +172,7 @@
               </mat-form-field>
             </div>
             <div class="action-button-container">
-              <button class="action-button" mat-raised-button color="primary" [disabled]="!formCreateAccount.valid">Create account</button>
+              <button class="action-button" mat-raised-button color="primary" type="submit" [disabled]="!formCreateAccount.valid">Create account</button>
             </div>
           </form>
         </mat-step>
