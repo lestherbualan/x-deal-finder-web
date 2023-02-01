@@ -94,7 +94,8 @@ export class SearchStoreComponent implements OnInit {
   }
 
   async handleSearch() {
-    this.router.navigateByUrl('search/store?q=' + this.searchKeywordCtrl.value);
+    const keyword = encodeURI(this.searchKeywordCtrl.value);
+    this.router.navigateByUrl('search/store?q=' + keyword);
     this.initSearch();
   }
 

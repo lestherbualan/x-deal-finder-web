@@ -69,7 +69,7 @@ export class ClientLayoutComponent implements OnDestroy {
       }
   }
   search() {
-    const key = this.searchKeywordCtrl.value;
+    const key = encodeURI(this.searchKeywordCtrl.value);
     this.searchKeywordCtrl.setValue('');
     this.router.navigateByUrl('search?q=' + key);
   }

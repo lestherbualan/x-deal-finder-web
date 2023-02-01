@@ -95,43 +95,35 @@ export class SearchComponent implements OnInit {
   }
 
   async handleSearch() {
-    this.router.navigateByUrl('search?q=' + this.searchKeywordCtrl.value);
-    this.initSearch();
+    const keyword = encodeURI(this.searchKeywordCtrl.value);
+    this.router.navigateByUrl('/search?q=' + keyword);
+    await this.initSearch();
   }
 
   async initSearch() {
     this.isLoading = true;
     const keyword = this.searchKeywordCtrl.value ? this.searchKeywordCtrl.value : '';
     try{
-      await this.offersService.getByClientAdvanceSearch({
+      const res = await this.offersService.getByClientAdvanceSearch({
         userId: this.currentUserId,
         key: keyword,
         dueDate: moment().format("YYYY-MM-DD"),
         offerTypes: this.selectedOfferType.toString()
-      })
-      .subscribe(async res => {
-        if (res.success) {
-          this.isLoading = false;
-          this.searchOfferData = res.data;
-          this.currentOffersToShow = res.data.slice(0 * 15, 0* 15 + 15);
-          console.log('here')
-          console.log(this.currentOffersToShow)
-        } else {
-          this.isLoading = false;
-          this.error = Array.isArray(res.message) ? res.message[0] : res.message;
-          this.snackBar.snackbarError(this.error);
-          if(this.error.toLowerCase().includes("not found")){
-            this.router.navigate(['/admin/client-stores/']);
-          }
-        }
-      }, async (err) => {
+      }).toPromise();
+      if (res.success) {
         this.isLoading = false;
-        this.error = Array.isArray(err.message) ? err.message[0] : err.message;
+        this.searchOfferData = res.data;
+        this.currentOffersToShow = res.data.slice(0 * 15, 0* 15 + 15);
+        console.log('here')
+        console.log(this.currentOffersToShow)
+      } else {
+        this.isLoading = false;
+        this.error = Array.isArray(res.message) ? res.message[0] : res.message;
         this.snackBar.snackbarError(this.error);
         if(this.error.toLowerCase().includes("not found")){
           this.router.navigate(['/admin/client-stores/']);
         }
-      });
+      }
     }
     catch(e){
       this.isLoading = false;
