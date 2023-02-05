@@ -64,7 +64,6 @@ export class HomeComponent implements OnInit {
       .subscribe(async res => {
         if (res.success) {
           this.isLoading = false;
-          //this.searchStoreData = res.data;
           for (let index = 0; index < res.data.length; index++) {
             if (res.data[index].reviews <1){
               this.noReviewsStoreData.push(res.data[index])

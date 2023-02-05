@@ -155,7 +155,6 @@ export class AddOfferComponent implements OnInit {
               dialogRef.componentInstance.isProcessing = this.isProcessing;
             }else{
               if(this.isNew) {
-                console.log(param)
                 await this.
                 offersService
                   .create(param)

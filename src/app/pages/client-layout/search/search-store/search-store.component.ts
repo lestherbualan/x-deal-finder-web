@@ -106,7 +106,6 @@ export class SearchStoreComponent implements OnInit {
       await this.storesService.getStoreAdvanceSearch({
         userId: this.currentUserId,
         key: keyword,
-        dueDate: moment().format("YYYY-MM-DD"),
         offerTypes: this.selectedOfferType.toString()
       })
       .subscribe(async res => {

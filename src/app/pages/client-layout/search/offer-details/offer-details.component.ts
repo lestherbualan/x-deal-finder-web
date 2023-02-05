@@ -39,7 +39,6 @@ export class OfferDetailsComponent  implements OnInit {
       .subscribe(async res => {
         if (res.success) {
           this.data = res.data;
-          console.log(this.data)
           this.isLoading = false;
         } else {
           this.isLoading = false;
