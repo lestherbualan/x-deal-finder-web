@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
   error;
   isLoading = false;
   searchStoreData: Stores[] = [];
+  noReviewsStoreData: Stores[] = [];
   currentUserId:string;
   constructor(
     private storesService: StoresService,
@@ -63,8 +64,14 @@ export class HomeComponent implements OnInit {
       .subscribe(async res => {
         if (res.success) {
           this.isLoading = false;
-          this.searchStoreData = res.data;
-          console.log(res.data)
+          //this.searchStoreData = res.data;
+          for (let index = 0; index < res.data.length; index++) {
+            if (res.data[index].reviews <1){
+              this.noReviewsStoreData.push(res.data[index])
+            }else{
+              this.searchStoreData.push(res.data[index])
+            }
+          }
         } else {
           this.isLoading = false;
           this.error = Array.isArray(res.message) ? res.message[0] : res.message;
