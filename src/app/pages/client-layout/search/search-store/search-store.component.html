@@ -2,7 +2,7 @@
   <h2>Search store</h2>
   <div fxLayout="column" fxLayout.gt-xs="row">
     <div class="search-control" fxFlex="30%" fxLayout="column" fxLayoutAlign="top">
-      <h3 ><strong>{{searchStoreData.length}} Stores found</strong></h3>
+      <h3 ><strong>{{searchStoreData.length}} Stores Found</strong></h3>
       <div fxLayout="column">
           <div fxFlex="100" >
               <mat-form-field style="width: 100%;" appearance="outline">
@@ -22,7 +22,7 @@
             </div>
             <div fxFlex="100" fxFlex="100" >
                 <div fxFlex.gt-xs="80%" fxFlex="90%">
-                    <mat-form-field style="width: 100%;" appearance="outline" >
+                    <mat-form-field style="width: 100%;" appearance="outline" (keydown)="$event.key === 'Enter' ? handleSearch() : true">
                       <mat-label>Product Categories</mat-label>
                       <mat-chip-list #offerTypeList [disabled]="isLoadingLookup">
                         <mat-chip

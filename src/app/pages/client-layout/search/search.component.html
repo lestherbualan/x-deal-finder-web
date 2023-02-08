@@ -22,7 +22,7 @@
             </div>
             <div fxFlex="100" fxFlex="100" >
                 <div fxFlex.gt-xs="80%" fxFlex="90%">
-                    <mat-form-field style="width: 100%;" appearance="outline" >
+                    <mat-form-field style="width: 100%;" appearance="outline" (keydown)="$event.key === 'Enter' ? handleSearch() : true">
                       <mat-label>Product Categories</mat-label>
                       <mat-chip-list #offerTypeList [disabled]="isLoadingLookup">
                         <mat-chip
