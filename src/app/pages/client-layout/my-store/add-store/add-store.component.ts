@@ -28,6 +28,7 @@ export class AddStoreComponent implements OnInit {
   storeDocuments: any[] = [];
   error;
   thumbnailFile;
+  socialLink;
   constructor(
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
@@ -42,6 +43,7 @@ export class AddStoreComponent implements OnInit {
     this.storeForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
+      socialLink: ['']
     });
     dialogRef.disableClose = true;
 
@@ -50,6 +52,7 @@ export class AddStoreComponent implements OnInit {
     if(!this.isNew) {
       this.f['name'].setValue(this.data.name);
       this.f['description'].setValue(this.data.description);
+      this.f['socialLink'].setValue(this.data.socialLink);
     }
   }
 

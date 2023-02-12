@@ -13,6 +13,7 @@ export class Stores {
     user: User;
     reviews: number;
     storeReviews: StoreReviews[];
+    socialLink: string;
   }
   export class StoreDocuments {
     storeDocumentId?: string;

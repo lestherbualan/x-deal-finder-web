@@ -33,6 +33,17 @@
                 (getError('description') && getError('description').required ? 'Please enter Description' : '')
               }}</mat-error>
           </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Social Link</mat-label>
+            <textarea
+              matInput
+              placeholder="Social Link"
+              formControlName="socialLink"
+              ></textarea>
+              <mat-error *ngIf="getError('socialLink') !== (null || undefined)">{{
+                (getError('socialLink') && getError('socialLink').required ? 'Please enter Social Link' : '')
+              }}</mat-error>
+          </mat-form-field>
           <!--
           <div fxFlex fxLayoutAlign="start" fxLayoutGap="10" *ngIf="isNew">
             <button mat-stroked-button matTooltip="Add" (click)="uploadAttachmentFile.click()" [disabled]="isProcessing">
