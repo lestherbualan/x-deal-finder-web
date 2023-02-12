@@ -49,8 +49,8 @@
                       </button>
                     </div>
                   </div>
-                  <div fxFlex="100" fxLayout="row" class="group-info">
-                    <h3 style="font-weight: 400;" class="group-info-text" *ngIf="!isLoading; else elseLoadinguUsername">{{storeData.socialLink}}</h3>
+                  <div fxFlex="100" fxLayout="row" class="group-info" style="margin-top: 10px;" *ngIf="storeData.socialLink != null">
+                    <a href={{storeData.socialLink}} target="_blank" mat-stroked-button matTooltip={{storeData.socialLink}}>Visit Website</a>
                     <ng-template #elseLoadinguUsername>
                       <ngx-skeleton-loader fxFlex [theme]="{ height: '20px', width: '20%'}"></ngx-skeleton-loader>
                     </ng-template>

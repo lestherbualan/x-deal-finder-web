@@ -11,6 +11,7 @@ import { SearchStoreComponent } from './search-store/search-store.component';
 import { StoreDetailsComponent } from './search-store/store-details/store-details.component';
 import { RatingComponent } from './search-store/store-details/rating/rating.component';
 import { NgxMaterialRatingModule } from 'ngx-material-rating';
+import { MatLinkPreviewModule } from '@angular-material-extensions/link-preview';
 
 export const routes: Routes = [
   {
@@ -46,7 +47,8 @@ export const routes: Routes = [
     MaterialModule,
     RouterModule.forChild(routes),
     NgxPaginationModule,
-    NgxMaterialRatingModule
+    NgxMaterialRatingModule,
+    MatLinkPreviewModule
   ]
 })
 export class SearchModule { }

@@ -22,6 +22,7 @@ import { AccountsLayoutComponent } from './pages/accounts-layout/accounts-layout
 import { StoreMenuModalComponent } from './component/store-menu-modal/store-menu-modal.component';
 import { WebcamCaptureComponent } from './component/webcam-capture/webcam-capture.component';
 import { WebcamModule } from 'ngx-webcam';
+import { MatLinkPreviewModule } from '@angular-material-extensions/link-preview';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { WebcamModule } from 'ngx-webcam';
     ReactiveFormsModule,
     MatTimepickerModule,
     WebcamModule,
+    MatLinkPreviewModule.forRoot()
   ],
   providers: [
     Title,
